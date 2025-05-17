@@ -1,0 +1,63 @@
+@startuml
+
+class Jugador{
+    -nombre: string
+    -apellido: string
+    -mail: string
+    -fechaNacimiento: Date
+    -equipo: Equipo
+    -paisOrigen: Pais
+    -cantidadPartidosJugadosEnUnaLiga: int
+    -posicion: Posicion
+    -altura: float
+    --
+    +new(): void
+    +getNombre(): string
+    +setNombre(nombre: string): void
+    +getApellido(): string
+    +setApellido(apellido: string): void
+    +getMail(): string
+    +setMail(mail: string): void
+    +getFechaNacimiento(): Date
+    +setFechaNacimiento(fecha: Date): void
+    +getEquipo(): Equipo
+    +setEquipo(equipo: Equipo): void
+    +getPaisOrigen(): Pais
+    +setPaisOrigen(pais: Pais): void
+    +getCantidadPartidosJugadosEnUnaLiga(): int
+    +setCantidadPartidosJugadosEnUnaLiga(cantidad: int): void
+    +getPosicion(): Posicion
+    +setPosicion(posicion: Posicion): void
+    +getAltura(): float
+    +setAltura(altura: float): void
+}
+
+class Pais{
+    -nombre: string
+    --
+    +new(): void
+    +getNombre(): string
+    +setNombre(nombre: string): void
+}
+
+class Posicion{
+    -descripcion: string
+    --
+    +new(): void
+    +getDescripcion(): string
+    +setDescripcion(descripcion: string): void
+}
+
+class Equipo{
+    -nombre: string
+    --
+    +new(): void
+    +getNombre(): string
+    +setNombre(nombre: string): void
+}
+
+Jugador --> Pais: 1
+Jugador --> Posicion: 1
+Jugador --> Equipo: 1
+
+@enduml
