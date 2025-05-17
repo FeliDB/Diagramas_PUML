@@ -56,6 +56,12 @@ class Equipo{
     +setNombre(nombre: string): void
 }
 
+class PantallasRondaDraft{
+    
+}
+
+
+
 Jugador --> Pais: 1
 Jugador --> Posicion: 1
 Jugador --> Equipo: 1

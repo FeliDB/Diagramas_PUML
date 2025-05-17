@@ -1,5 +1,49 @@
 @startuml
 
+actor AD
+
+boundary PantallaRondasDraft
+control GestorRondasDraft
+entity Draft #Pink
+entity Temporada #Pink
+entity "seleccionada:Temporada" as STemporada
+entity TablaRendimiento
+entity Equipos #Pink
+entity PrimerRonda
+
+
+AD --> PantallaRondasDraft: seleccionarOpcionGenerarRondasDraft()
+PantallaRondasDraft -> PantallaRondasDraft: habilitarVentana()
+GestorRondasDraft -> GestorRondasDraft: buscarDraftAnioActual
+
+loop Mientras Haya Drafts
+    GestorRondasDraft -> Draft: getAnio()
+    GestorRondasDraft -> Draft: esActual()
+end
+
+GestorRondasDraft -> PantallaRondasDraft: solicitarIngresoHorasEstimadasRonda1()
+AD -> PantallaRondasDraft: tomarIngresoHorasEstimadasRonda1()
+PantallaRondasDraft -> GestorRondasDraft: tomarIngresoHorasEstimadasRonda1()
+
+GestorRondasDraft -> PantallaRondasDraft: solicitarIngresoHorasEstimadasRonda2()
+AD -> PantallaRondasDraft: tomarIngresoHorasEstimadasRonda2()
+PantallaRondasDraft -> GestorRondasDraft: tomarIngresoHorasEstimadasRonda2()
+
+
+loop Mientras Haya Temporada
+    GestorRondasDraft -> GestorRondasDraft: buscarTemporadaRendimientoTemporadaAnterior()
+    GestorRondasDraft -> Temporada: getTemporada()
+    GestorRondasDraft -> Temporada: esTemporadaAnterior()
+end
+
+
+loop Mientras haya Equipos
+    GestorRondasDraft -> STemporada: getTablaRendimiento()
+    STemporada -> TablaRendimiento: getEquipos()
+    TablaRendimiento -> Equipos: getPosiciones()
+    TablaRendimiento -> Equipos: getNombres()
+end
+
 
 
 
