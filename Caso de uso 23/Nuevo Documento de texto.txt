@@ -1,0 +1,70 @@
+@startuml
+
+actor ":RI" as RI
+boundary ":PantallaCierreOrdenInspeccion" as PI
+control ":GestorCierreOrdenInspeccion" as GCI
+entity "actual:Sesion" as SA
+entity "logueado:Usuario" as US
+entity OrdenInspeccion as OI #Pink
+entity EstadoOrdenInspeccion as ST
+entity Estacionsismologica as ES
+entity Sismografo as SIS
+entity MotivoTipo as MT #Pink
+entity Estados as STS #Pink
+entity OrdenInspeccionSeleccionada as OIS
+
+
+RI --> PI: seleccionarOpcionCerrarOrdenInspeccion()
+PI --> PI: habilitarVentana()
+PI --> GCI: nuevoCierre()
+GCI --> GCI: buscarRILogeado()
+GCI --> SA: obtenerUsuarioLogeado()
+SA --> US: mostrarEmpleado()
+GCI --> GCI: buscarOrdenesInspeccionRealizadas()
+
+loop OrdenInspeccion (Mientras haya ordenes de inspeccion)
+	GCI --> OI: estaEmpleado()
+	GCI --> OI: estaCompletamenteRealizada()
+	OI --> ST: estaCompletamenteRealizada()
+	OI --> OI: getNumeroOrden()
+	OI --> OI: getFF()
+	OI --> ES: getNombre()
+	OI --> ES: getSismografo()
+end
+
+GCI --> GCI: ordenar()
+GCI --> PI: pedirOrdenSeleccion()
+RI --> PI: seleccionarOrden()
+PI --> GCI: tomarSeleccionOrden()
+GCI --> PI: pedirIngresoObservaciones()
+RI --> PI: ingresarObservaciones()
+PI --> GCI: tomarIngresoObservaciones()
+GCI --> GCI: buscarMotivosTipo()
+GCI --> MT: *getDescripcion()
+GCI --> PI: mostrarMotivosTipoParaSeleccion()
+
+
+loop RI (Mientras haya MotivosTipo seleccionados)
+	RI --> PI: seleccionarMotivoTipo()
+	PI --> GCI: tomarSeleccionMotivoTipo()
+	RI --> PI: ingresarComentarioPorMotivo()
+	PI --> GCI: tomarSeleccionComentario
+end
+
+GCI --> PI: pedirConfirmacion()
+RI --> PI: tomarConfirmacion()
+PI --> GCI: tomarConfirmacion()
+GCI --> GCI: buscarEstadoCerradaParaOrdenInspeccion()
+
+loop
+	GCI --> STS: esAmbitoOrdenInspeccion()
+	GCI --> STS: esCerrado()
+end
+
+GCI --> GCI: tomarFechaYHora()
+GCI --> GCI: cerrarOrdenInspeccion()
+GCI --> OIS: cerrar()
+OIS --> OIS: setEstado()
+OIS --> OIS: setFechaHoraCierre()
+
+@enduml

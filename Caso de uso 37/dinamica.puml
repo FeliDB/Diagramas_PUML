@@ -1,0 +1,26 @@
+@startuml Dinamica
+
+Actor "RI"
+boundary "PantallaCierreInspeccion" as Boundary
+control "GestorCierreInspeccion" as GCI
+entity "Sesiones" as Sesiones #LightGreen
+entity "OrdenInspeccion" as OI #LightGreen
+
+
+"RI" -> Boundary: iniciarCierreInspeccion()
+Boundary -> Boundary: habilitarVentana()
+Boundary -> GCI: nuevaInspeccion()
+GCI -> GCI: buscarEmpleado()
+GCI -> Sesiones: getEmpleado()
+GCI -> GCI: buscarOrdenesInspeccionRealizadas()
+GCI -> OI: *esRealizada()
+GCI -> GCI: ordenarOrdenesInspeccionRealizadas()
+GCI -> Boundary: mostrarOrdenInspeccion()
+"RI" -> Boundary: tomarSeleccionOrdenInspeccion()
+Boundary -> GCI: tomarSeleccionOrdenInspeccion()
+GCI -> Boundary: mostrarIngresoObservacionCierre()
+"RI" -> Boundary: tomarIngresoObservacionCierre()
+Boundary -> GCI: tomarIngresoObservacionCierre()
+
+
+@enduml
