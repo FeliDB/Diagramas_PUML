@@ -1,3 +1,117 @@
 @startuml
+actor Organizador
+boundary PantallaPublicacionEvento
+control GestorEventos
+entity sesionActual
+entity Usuario
+entity Evento #Pink
+entity "seleccionado:Estado" as Estado
+entity "seleccionado:Evento" as SEvento
+entity "evento:TipoEntrada" as TEntrada
+entity Estados #Pink
+
+Organizador -> PantallaPublicacionEvento: seleccionarOpcionPublicarEvento()
+PantallaPublicacionEvento -> PantallaPublicacionEvento: habilitarVentana()
+PantallaPublicacionEvento -> GestorEventos: nuevaPublicacionEvento()
+GestorEventos -> GestorEventos: buscarSesionActual()
+GestorEventos -> sesionActual: buscarSesionActual()
+sesionActual -> Usuario: buscarSesionActual
+GestorEventos -> PantallaPublicacionEvento: mostrarNombreUsuarioLogueado()
+GestorEventos -> GestorEventos: buscarEventosListoParaPublicar()
+GestorEventos -> Evento: *esListoParaPublicar()
+Evento -> Estado: esEstadoListoParaPublicar()
+GestorEventos -> PantallaPublicacionEvento: mostrarEventosListoParaPublicar()
+Organizador -> PantallaPublicacionEvento: seleccionarEventoLstoParaPublicar()
+PantallaPublicacionEvento -> GestorEventos: tomarSeleccionEventoListoParaPublicar()
+
+GestorEventos -> GestorEventos: buscarNombreEvento()
+GestorEventos -> SEvento: getNombre()
+
+GestorEventos -> GestorEventos: buscarDescripcionEvento()
+GestorEventos -> SEvento: getDescripcion()
+
+GestorEventos -> GestorEventos: buscarFotoEvento()
+GestorEventos -> SEvento: getFoto()
+
+GestorEventos -> GestorEventos: buscarUbicacionEvento()
+GestorEventos -> SEvento: getUbicacion()
+
+GestorEventos -> GestorEventos: buscarFechaInicioEvento()
+GestorEventos -> SEvento: getFechaInicio()
+
+GestorEventos -> GestorEventos: buscarFechaFinEvento()
+GestorEventos -> SEvento: getFechaFin()
+
+GestorEventos -> GestorEventos: buscarTipoEvento()
+GestorEventos -> SEvento: getTipoEvento()
+
+GestorEventos -> GestorEventos: buscarCategoriasEvento()
+GestorEventos -> SEvento: *getCategoria()
+
+GestorEventos -> GestorEventos: buscarMediosPagoEvento()
+GestorEventos -> SEvento: getMedioPago()
+
+GestorEventos -> GestorEventos: buscarTipoEntradaEvento()
+GestorEventos -> SEvento: getTipoEntrada()
+
+
+SEvento -> TEntrada: buscarPrecioTipoEntradaEvento()
+SEvento -> TEntrada: getPrecio()
+
+SEvento -> TEntrada: buscarCantidadMaxMinPersonasEvento()
+SEvento -> TEntrada: getCantidadMaxMin()
+
+
+GestorEventos -> PantallaPublicacionEvento: mostrarNombreEvento()
+GestorEventos -> PantallaPublicacionEvento: mostrarDescripcionEvento()
+GestorEventos -> PantallaPublicacionEvento: mostrarFotoEvento()
+GestorEventos -> PantallaPublicacionEvento: mostrarUbicacionEvento()
+GestorEventos -> PantallaPublicacionEvento: mostrarFechaInicioEvento()
+GestorEventos -> PantallaPublicacionEvento: mostrarFechaFinEvento()
+GestorEventos -> PantallaPublicacionEvento: mostrarTipoEvento()
+GestorEventos -> PantallaPublicacionEvento: mostrarCategoriasEvento()
+GestorEventos -> PantallaPublicacionEvento: mostrarMediosPagoEvento()
+GestorEventos -> PantallaPublicacionEvento: mostrarTiposEntradaEvento()
+GestorEventos -> PantallaPublicacionEvento: mostrarPrecioTipoEntradaEvento()
+GestorEventos -> PantallaPublicacionEvento: mostrarCantidadMaxMinPersonasEvento()
+
+
+
+Organizador -> PantallaPublicacionEvento: ingresarNombreEvento()
+Organizador -> PantallaPublicacionEvento: ingresarDescripcionEvento()
+Organizador -> PantallaPublicacionEvento: seleccionarFotoEvento()
+Organizador -> PantallaPublicacionEvento: ingresarUbicacionEvento()
+Organizador -> PantallaPublicacionEvento: ingresarFechaInicioEvento()
+Organizador -> PantallaPublicacionEvento: ingresarFechaFinEvento()
+Organizador -> PantallaPublicacionEvento: seleccionarTipoEvento()
+Organizador -> PantallaPublicacionEvento: seleccionarCategoriasEvento()
+Organizador -> PantallaPublicacionEvento: seleccionarMediosPagoEvento()
+Organizador -> PantallaPublicacionEvento: seleccionarTiposEntradaEvento()
+Organizador -> PantallaPublicacionEvento: ingresarPrecioTipoEntradaEvento()
+Organizador -> PantallaPublicacionEvento: ingresarCantidadMaxMinPersonasEvento()
+
+PantallaPublicacionEvento -> GestorEventos: tomarIngresoNombreEvento()
+PantallaPublicacionEvento -> GestorEventos: tomarIngresoDescripcionEvento()
+PantallaPublicacionEvento -> GestorEventos: tomarSeleccionFotoEvento()
+PantallaPublicacionEvento -> GestorEventos: tomarIngresoUbicacionEvento()
+PantallaPublicacionEvento -> GestorEventos: tomarIngresoFechaInicioEvento()
+PantallaPublicacionEvento -> GestorEventos: tomarIngresoFechaFinEvento()
+PantallaPublicacionEvento -> GestorEventos: tomarSeleccionTipoEvento()
+PantallaPublicacionEvento -> GestorEventos: tomarSeleccionCategoriasEvento()
+PantallaPublicacionEvento -> GestorEventos: tomarSeleccionMediosPagoEvento()
+PantallaPublicacionEvento -> GestorEventos: tomarSeleccionTiposEntradaEvento()
+PantallaPublicacionEvento -> GestorEventos: tomarIngresoPrecioTipoEntradaEvento()
+PantallaPublicacionEvento -> GestorEventos: tomarIngresoCantidadMaxMinPersonasEvento()
+
+GestorEventos -> PantallaPublicacionEvento: solicitarConfirmacion()
+Organizador -> PantallaPublicacionEvento: confirmar()
+PantallaPublicacionEvento -> GestorEventos: tomarConfirmacion()
+
+GestorEventos -> GestorEventos: generarUrlEvento()
+GestorEventos -> GestorEventos: cambiarEstadoAPublicado()
+GestorEventos -> Evento: cambiarEstadoAPublicado()
+Evento -> Estados: esPublicado()
+GestorEventos -> GestorEventos: finDelCU()
+
 
 @enduml
