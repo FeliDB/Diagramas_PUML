@@ -1,0 +1,65 @@
+@startuml
+actor Organizador
+
+boundary PantallaAcreditacion
+control GestorAcreditacion
+entity SesionActual
+entity seleccionadoUsuario
+entity Evento
+entity seleccionadoEvento
+entity eventoInscripciones #HotPink
+entity Usuario #HotPink
+entity UsuariosAcreditados #HotPink
+entity seleccionadoEstadoInscripcion
+
+Organizador --> PantallaAcreditacion: seleccionarOpcionRegistrarAcreditacionAEvento
+PantallaAcreditacion --> PantallaAcreditacion: habilitarVentana()
+PantallaAcreditacion --> GestorAcreditacion: nuevaAcreditacionAEvento()
+GestorAcreditacion --> GestorAcreditacion: buscarUsuarioLogueado()
+GestorAcreditacion --> SesionActual: getUsuario()
+
+loop Mientras Haya Eventos
+    SesionActual --> seleccionadoUsuario: getEvento()
+    seleccionadoUsuario --> Evento: esEnCurso()
+end
+
+GestorAcreditacion --> PantallaAcreditacion: mostrarNombreEvento()
+Organizador --> PantallaAcreditacion: seleccionarEvento()
+PantallaAcreditacion --> GestorAcreditacion: tomarSeleccionEvento()
+
+GestorAcreditacion --> GestorAcreditacion: obtenerInscripcionesNoCancelables()
+
+loop Mientras Haya Inscripciones
+GestorAcreditacion --> seleccionadoEvento: getInscripciones()
+seleccionadoEvento --> eventoInscripciones: esNoCancelable()
+eventoInscripciones --> Usuario: getNombre()
+eventoInscripciones --> Usuario: getApellido()
+eventoInscripciones --> Usuario: getDNI()
+end
+
+
+loop Mientras Haya Participantes
+GestorAcreditacion --> PantallaAcreditacion: mostrarParticipantes()
+Organizador --> PantallaAcreditacion: seleccionarParticipanteAACreditar()
+PantallaAcreditacion --> GestorAcreditacion: tomarSeleccionParticipanteAACreditar()
+end
+
+GestorAcreditacion --> PantallaAcreditacion: solicitarConfirmacionAcreditacion()
+Organizador --> PantallaAcreditacion: ingresarConfirmacionAcreditacionParticipantes()
+PantallaAcreditacion --> GestorAcreditacion: tomarConfirmacionAcreditacionParticipantes()
+
+loop Mientras Haya Participantes
+GestorAcreditacion --> GestorAcreditacion: modificarEstadoInscripcionAAcreditada()
+GestorAcreditacion --> UsuariosAcreditados: setEstado()
+GestorAcreditacion --> GestorAcreditacion: registrarCambioEstado()
+
+
+GestorAcreditacion --> seleccionadoEstadoInscripcion: registrarFecha()
+GestorAcreditacion --> seleccionadoEstadoInscripcion: registrarHora()
+GestorAcreditacion --> seleccionadoEstadoInscripcion: registrarUsuario()
+GestorAcreditacion --> GestorAcreditacion: finCU()
+
+end
+
+
+@enduml

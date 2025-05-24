@@ -1,0 +1,90 @@
+@startuml
+
+class Usuario{
+    - nombreusuario
+    - nombre
+    - apellido
+    - dni
+    - contrasenia
+    - rol: Rol
+    --
+    + new()
+    + getNombre()
+    + getApellido()
+    + getDNI()
+}
+
+Usuario --> Evento: 0..*
+
+class Rol{
+    - descripcion
+    --
+    + new()
+}
+
+class SesionActual{
+    - usuario: Usuario
+    --
+    + new()
+}
+
+class Evento{
+    - nombre
+    - fechaInicio
+    - fechaFin
+    - ubicacion
+    - tipoEvento: TipoEvento
+    - categorias: Categoria
+    - estado: Estado
+    --
+    + new()
+}
+
+Evento --> TipoEvento: 1
+Evento --> Estado: 1
+Evento --> Categoria: 1..*
+
+class Estado{
+    - descripcion
+    --
+    + new()
+}
+
+class TipoEvento{
+    - descripcion
+    --
+    new()
+}
+
+class Categoria{
+    - descripcion
+    --
+    new()
+}
+
+class Inscripcion{
+    - fechaInscripcion
+    - estadoInscripcion: EstadoInscripcion
+    - evento: Evento
+    - usuario: Usuario
+    --
+    + new()
+}
+
+
+
+Inscripcion --> Evento: 1
+Inscripcion --> EstadoInscripcion: 1
+Inscripcion --> Usuario: 0..*
+
+class EstadoInscripcion{
+    - descripcion
+    --
+    + new()
+}
+
+
+Usuario -> Rol: 1
+SesionActual -> Usuario: 1..*
+
+@enduml

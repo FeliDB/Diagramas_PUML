@@ -1,0 +1,17 @@
+@startuml
+[*] --> PendienteInscripcion: new() [cupoMaximo == true && fechaInscripcion = true]
+[*] --> Cerrada: [cupoMaximo == false || fechaInscripcion = false]
+Cerrada --> [*]
+PendienteInscripcion --> PreInscripta: completarFormulario() [EventoPago == true]
+PendienteInscripcion --> Inscripta: completarFormulario() [EventoPago == false]
+PreInscripta --> Inscripta: registrarPago() [PagoEfectuado == true]
+PreInscripta --> Anulada: [PagoEfectuado == false && cancelarInscripcion == false]
+Anulada --> [*]
+
+PendienteInscripcion --> Cancelada: [EventoPago == false]
+PreInscripta --> Cancelada: [PagoEfectuado == false && cancelarInscripcion == true]
+Inscripta --> Cancelada: []
+
+
+
+@enduml
