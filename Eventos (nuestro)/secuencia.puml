@@ -1,0 +1,62 @@
+@startuml
+
+actor Organizador
+boundary PantallaPublicacionEvento
+control GestorPublicacionEvento
+entity Sesion
+entity "sesion:Usuario" as sUsuario
+entity "usuario:Organizador" as uOrganizador
+entity Evento #LightPink
+entity "evento:Estado" as eEstado
+entity "seleccionado:Evento" as sEvento
+
+Organizador -> PantallaPublicacionEvento: seleccionarOpcionPublicarEvento()
+PantallaPublicacionEvento -> PantallaPublicacionEvento: habilitarVentana()
+PantallaPublicacionEvento -> GestorPublicacionEvento: nuevaPublicacionEvento()
+GestorPublicacionEvento -> GestorPublicacionEvento: buscarNombreUsuarioLogueado()
+
+GestorPublicacionEvento -> Sesion: getUsuario()
+Sesion -> sUsuario: getNombreUsuario()
+sUsuario -> uOrganizador: getNombreOrganizador()
+
+loop Mientras Haya Eventos:
+uOrganizador -> Evento: getEvento()
+Evento -> eEstado: getEstado()
+eEstado -> eEstado: esListoParaPublicar()
+GestorPublicacionEvento -> sEvento: getDescripcion()
+end
+
+GestorPublicacionEvento -> PantallaPublicacionEvento: mostrarEventoConDescripcion()
+Organizador -> PantallaPublicacionEvento: seleccionarEventoConDescripcion()
+PantallaPublicacionEvento -> GestorPublicacionEvento: tomarSeleccionEventoConDescripcion()
+
+
+GestorPublicacionEvento -> GestorPublicacionEvento: buscarDatosEventoSeleccionado()
+
+GestorPublicacionEvento -> sEvento: getDatosEvento()
+GestorPublicacionEvento -> PantallaPublicacionEvento: mostrarDatosEvento()
+GestorPublicacionEvento -> PantallaPublicacionEvento: solicitarConfirmacionPublicacionEvento()
+Organizador -> PantallaPublicacionEvento: confirmarPublicacionEvento()
+PantallaPublicacionEvento -> GestorPublicacionEvento: tomarConfirmacionPublicacionEvento()
+
+GestorPublicacionEvento -> GestorPublicacionEvento: generarURLPublicacion()
+GestorPublicacionEvento -> GestorPublicacionEvento: cambiarEstadoAPublicado()
+GestorPublicacionEvento -> sEvento: publicarEvento()
+sEvento -> sEvento: getEstadoActual()
+sEvento -> eEstado: setFecha()
+sEvento -> eEstado: setHora()
+sEvento -> eEstado: setUsuario()
+sEvento -> sEvento: crearCambioEstado()
+
+entity "publicado:CambioEstado" as pCambioEstado
+
+sEvento -> pCambioEstado: new()
+
+GestorPublicacionEvento -> GestorPublicacionEvento: finCU()
+
+
+
+
+
+
+@endul

@@ -12,6 +12,7 @@ class Evento{
     -medioPago: MedioPago
     -tipoEntrada: TipoEntrada
     -estadoActual: EstadoEvento
+    -linkEvento
     -
     -
     --
@@ -98,10 +99,40 @@ class Organizador{
     +new()
 }
 
-Organizador -> Usuario: 1
+Usuario -> Organizador: 1
 Organizador --> Evento: 0..*
 
 CambioEstado --> EstadoEvento: 1
 CambioEstado -> Usuario: 1
+
+class PantallaPublicacionEvento{
+    -evento: Evento
+    --
+    +habilitarVentana()
+    +nuevaPublicacionEvento()
+    +tomarSeleccionEventoConDescripcion()
+    +tomarConfirmacionPublicacionEvento()
+}
+
+class GestorPublicacionEvento{
+    -nombreUsuario
+    -nombreOrganizador
+    -evento: Evento
+    -url
+    --
+    +buscarNombreUsuarioLogueado()
+    +getUsuario()
+    +getDescripcion()
+    +buscarDatosEventoSeleccionado()
+    +getDatosEvento()
+    +generarURLPublicacion()
+    +cambiarEstadoAPublicado()
+    +publicarEvento()
+}
+
+GestorPublicacionEvento .> PantallaPublicacionEvento
+PantallaPublicacionEvento .> GestorPublicacionEvento
+GestorPublicacionEvento ..> Evento
+GestorPublicacionEvento ..> Sesion
 
 @enduml
