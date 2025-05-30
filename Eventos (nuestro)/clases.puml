@@ -1,0 +1,107 @@
+@startuml
+
+class Evento{
+    -nombre
+    -descripcion
+    -foto
+    -ubicacion
+    -fechaInicio
+    -fechaFin
+    -tipoEvento: TipoEvento
+    -categoria: Categoria
+    -medioPago: MedioPago
+    -tipoEntrada: TipoEntrada
+    -estadoActual: EstadoEvento
+    -
+    -
+    --
+    +new()
+    +cancelarEvento()
+    +completarFormulario()
+    +finalizarEvento()
+    +iniciarEvento()
+    +publicarEvento()
+}
+
+Evento -> Categoria: 1..*
+Evento --> TipoEvento: 1
+Evento --> TipoEntrada: 1
+Evento ---> MedioPago: 1
+Evento --> EstadoEvento: 1
+
+class TipoEntrada{
+    -nombre
+    -descripcion
+    -precio
+    -cantMaximaParticipantes
+    -cantMinimaParticipantes
+    --
+    +new()
+}
+
+class Categoria{
+    -nombre
+    -descripcion
+    --
+    +new()
+}
+
+class MedioPago{
+    -nombre
+    --
+    +new()
+}
+
+class TipoEvento{
+    -nombre
+    -descripcion
+    --
+    +new()
+}
+
+class EstadoEvento{
+    -nombre
+    --
+    +new()
+}
+
+class CambioEstado{
+    -nombre
+    -fecha
+    -estado: Estado
+    --
+    +new()
+}
+
+class Sesion{
+    -usuario: Usuario
+    --
+    +new()
+}
+
+Sesion --> Usuario: 1
+
+class Usuario{
+    -nombreUsuario
+    -mail
+    -contraseña
+    --
+    +new()
+}
+
+class Organizador{
+    -nombre
+    -apellido
+    -usuario: Usuario
+    -evento: Evento
+    --
+    +new()
+}
+
+Organizador -> Usuario: 1
+Organizador --> Evento: 0..*
+
+CambioEstado --> EstadoEvento: 1
+CambioEstado -> Usuario: 1
+
+@enduml
