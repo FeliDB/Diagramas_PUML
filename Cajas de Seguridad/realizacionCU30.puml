@@ -1,0 +1,123 @@
+@startuml RealizacionCU30
+
+actor RA
+boundary PantallaRegistroSolicitudAccesoForzado
+control GestorRegistroSolicitudAccesoForzado
+entity MotivoAccesoForzadoCajaSeguridad #LightPink
+entity Cliente #LightPink
+entity "seleccionado:Cliente" as SCliente
+entity "cliente:Contratos" as CContrato #LightPink
+entity "contrato:CajaSeguridad" as CCaja
+entity "seleccionado:clienteContrato" as SCContrato
+entity SolicitudAccesoForzado
+entity EstadoContrato #Pink
+entity EstadoCajaSeguridad #Pink
+entity SesionActual
+entity ResponsableAdministrativo
+entity CambioEstadoContrato
+entity "seleccionado:clienteContratoCajaDeSeguridad" as CajaSEL
+
+RA -> PantallaRegistroSolicitudAccesoForzado: seleccionarOpcionRegistrarSolicitudAccesoForzado()
+PantallaRegistroSolicitudAccesoForzado -> PantallaRegistroSolicitudAccesoForzado: habilitarVentana()
+PantallaRegistroSolicitudAccesoForzado -> GestorRegistroSolicitudAccesoForzado: nuevoRegistroSolicitudAccesoForzado()
+
+GestorRegistroSolicitudAccesoForzado -> GestorRegistroSolicitudAccesoForzado: seleccionarMotivoAccesoForzado()
+
+
+loop Mientras haya motivos
+GestorRegistroSolicitudAccesoForzado -> MotivoAccesoForzadoCajaSeguridad: getMotivosAccesoForzado()
+GestorRegistroSolicitudAccesoForzado -> PantallaRegistroSolicitudAccesoForzado: mostrarMotivosAccesoForzado()
+end
+
+RA -> PantallaRegistroSolicitudAccesoForzado: seleccionarMotivoOrdenJudicial()
+PantallaRegistroSolicitudAccesoForzado -> GestorRegistroSolicitudAccesoForzado: tomarSeleccionMotivoOrdenJudicial()
+
+GestorRegistroSolicitudAccesoForzado -> PantallaRegistroSolicitudAccesoForzado: solicitarIngresoDNIPersonaReferida()
+RA -> PantallaRegistroSolicitudAccesoForzado: ingresarDNIPersonaReferida()
+PantallaRegistroSolicitudAccesoForzado -> GestorRegistroSolicitudAccesoForzado: tomarIngresoDNIPersonaReferida()
+
+GestorRegistroSolicitudAccesoForzado -> GestorRegistroSolicitudAccesoForzado: buscarCliente()
+
+loop Mientras haya clientes
+GestorRegistroSolicitudAccesoForzado -> Cliente: getDni()
+Cliente -> Cliente: coincidenDni()
+end
+
+GestorRegistroSolicitudAccesoForzado -> SCliente: getNombre()
+GestorRegistroSolicitudAccesoForzado -> SCliente: getApellido()
+GestorRegistroSolicitudAccesoForzado -> SCliente: getDatosLecturaIris()
+GestorRegistroSolicitudAccesoForzado -> SCliente: getDatosHuellaDactilar()
+GestorRegistroSolicitudAccesoForzado -> SCliente: getDatosBiometricos()
+SCliente -> SCliente: esTitularDeContrato()
+
+
+GestorRegistroSolicitudAccesoForzado -> PantallaRegistroSolicitudAccesoForzado: mostrarNombreCliente()
+GestorRegistroSolicitudAccesoForzado -> PantallaRegistroSolicitudAccesoForzado: mostrarApellidoCliente()
+GestorRegistroSolicitudAccesoForzado -> PantallaRegistroSolicitudAccesoForzado: mostrarDatosBiometricosCliente()
+GestorRegistroSolicitudAccesoForzado -> PantallaRegistroSolicitudAccesoForzado: mostrarDatosHuellaDactilarCliente()
+GestorRegistroSolicitudAccesoForzado -> PantallaRegistroSolicitudAccesoForzado: mostrarDatosLecturaIrisCliente()
+
+GestorRegistroSolicitudAccesoForzado -> PantallaRegistroSolicitudAccesoForzado: solicitarConfirmacionDatosCliente()
+
+RA -> PantallaRegistroSolicitudAccesoForzado: confirmarDatosCliente()
+
+PantallaRegistroSolicitudAccesoForzado -> GestorRegistroSolicitudAccesoForzado: tomarConfirmacionDatosCliente()
+
+GestorRegistroSolicitudAccesoForzado -> GestorRegistroSolicitudAccesoForzado: buscarContratosVigentesCliente()
+
+loop Mientras haya contratos
+GestorRegistroSolicitudAccesoForzado -> Cliente: getContratos()
+Cliente -> CContrato: getContrato()
+CContrato -> CContrato: esVigente()
+
+
+GestorRegistroSolicitudAccesoForzado -> SCContrato: getNroContrato()
+GestorRegistroSolicitudAccesoForzado -> SCContrato: getNroCajaSeguridad()
+SCContrato -> CCaja: coincideConOrdenJudicial()
+GestorRegistroSolicitudAccesoForzado -> SCContrato: getFechaVigencia()
+
+GestorRegistroSolicitudAccesoForzado -> PantallaRegistroSolicitudAccesoForzado: mostrarNroContrato()
+GestorRegistroSolicitudAccesoForzado -> PantallaRegistroSolicitudAccesoForzado: mostrarFechaVigencia()
+GestorRegistroSolicitudAccesoForzado -> PantallaRegistroSolicitudAccesoForzado: mostrarNroCajaSeguridad()
+
+RA -> PantallaRegistroSolicitudAccesoForzado: seleccionarContrato()
+PantallaRegistroSolicitudAccesoForzado -> GestorRegistroSolicitudAccesoForzado: tomarSeleccionContrato
+end
+
+GestorRegistroSolicitudAccesoForzado -> PantallaRegistroSolicitudAccesoForzado: solicitarConfirmacionCreacionSolicitudAccesoForzado
+RA -> PantallaRegistroSolicitudAccesoForzado: confirmarSolicitudCreacionAccesoForzado()
+PantallaRegistroSolicitudAccesoForzado -> GestorRegistroSolicitudAccesoForzado: tomarSeleccionSolicitudCreacionAccesoForzado()
+
+
+GestorRegistroSolicitudAccesoForzado -> GestorRegistroSolicitudAccesoForzado: registrarSolicitudAccesoForzado()
+GestorRegistroSolicitudAccesoForzado -> SolicitudAccesoForzado: new()
+
+GestorRegistroSolicitudAccesoForzado -> GestorRegistroSolicitudAccesoForzado: buscarEstadoConAccesoForzado()
+GestorRegistroSolicitudAccesoForzado -> EstadoContrato: *esConAccesoForzado()
+GestorRegistroSolicitudAccesoForzado -> GestorRegistroSolicitudAccesoForzado: cambiarEstadoConAccesoForzado()
+GestorRegistroSolicitudAccesoForzado -> SCContrato: forzarAcceso()
+SCContrato -> SCContrato: setEstadoConAccesoForzado()
+
+GestorRegistroSolicitudAccesoForzado -> GestorRegistroSolicitudAccesoForzado: buscarEstadoConAccesoForzado()
+GestorRegistroSolicitudAccesoForzado -> EstadoCajaSeguridad: *esConAccesoForzado()
+GestorRegistroSolicitudAccesoForzado -> GestorRegistroSolicitudAccesoForzado: cambiarEstadoConAccesoForzado()
+GestorRegistroSolicitudAccesoForzado -> CajaSEL: forzarAcceso()
+CajaSEL -> CajaSEL: setEstadoConAccesoForzado()
+
+
+GestorRegistroSolicitudAccesoForzado -> SesionActual: getResponsable()
+SesionActual -> ResponsableAdministrativo: getNombre()
+
+GestorRegistroSolicitudAccesoForzado -> SCContrato: crearCambioEstado()
+SCContrato -> SCContrato: crearCambioEstado()
+SCContrato -> CambioEstadoContrato: new()
+
+GestorRegistroSolicitudAccesoForzado -> CajaSEL: crearCambioEstado()
+CajaSEL -> CajaSEL: crearCambioEstado()
+CajaSEL -> CambioEstadoContrato: new()
+
+CajaSEL -> CajaSEL: findelCU()
+
+
+
+@enduml
